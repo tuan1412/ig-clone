@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const UserModel = require('../../modules/auth/user');
+const UserModel = require('../modules/auth/user');
 
 const { JWT_PRIVATE_KEY } = process.env;
 

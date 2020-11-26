@@ -3,9 +3,13 @@ const mongoose = require('mongoose');
 const CommentSchema = mongoose.Schema(
   {
     content: '',
-    userId: {
+    createdBy: {
       type: mongoose.Types.ObjectId,
       ref: 'User'
+    },
+    imageId: {
+      type: mongoose.Types.ObjectId,
+      ref: 'Image'
     }
   },
   { timestamps: true }
