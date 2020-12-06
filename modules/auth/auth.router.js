@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const authController = require('./auth.controller');
+const isAuth = require('../../middlewares/isAuth');
 
 router.post('/register', async (req, res) => {
   try {
@@ -19,6 +20,14 @@ router.post('/login', async (req, res) => {
     const token = await authController.login({ username, password });
 
     res.send({ success: 1, data: token });
+  } catch ({ message, status = 500 }) {
+    res.status(status).send({ success: 0, message })
+  }
+});
+
+router.get('/verify', isAuth, async (req, res) => {
+  try {
+    res.send({ success: 1, data: req.user });
   } catch ({ message, status = 500 }) {
     res.status(status).send({ success: 0, message })
   }

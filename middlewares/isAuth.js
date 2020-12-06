@@ -14,7 +14,7 @@ module.exports = async (req, res, next) => {
 
     const data = jwt.verify(token, JWT_PRIVATE_KEY);
     const { userId } = data;
-    const user = await UserModel.findById(userId);
+    const user = await UserModel.findById(userId).select('-password');
     if (!user) return res.status(401).send({ success: 0, message: 'Unauthorized'});
 
     req.user = user;

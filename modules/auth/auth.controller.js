@@ -30,23 +30,29 @@ const register = async ({ username, password, confirmPassword }) => {
   const salt = bcrypt.genSaltSync(10);
   const hashPassword = bcrypt.hashSync(password, salt);
   const newUser = await UserModel.create({ username, password: hashPassword });
-  return newUser;
+
+  const cloneUser = JSON.parse(JSON.stringify(newUser));
+  const { password:newPasswordUser, ...sendClientUser } = cloneUser;
+  const token = genToken(newUser._id);
+
+  return { ...sendClientUser, token};
 };
 
 const login = async ({ username, password }) => {
-  const existedUser = await UserModel.findOne({ username });
+  const existedUser = await UserModel.findOne({ username }).lean();
   if (!existedUser) {
     throw new CustomError('Username or password is wrong', 401);
   }
 
-  const { _id, password: passwordUser } = existedUser;
+  const { password:passwordUser, _id, ...sendClientUser } = existedUser;
+
   const samePassword = bcrypt.compareSync(password, passwordUser);
   if (!samePassword) {
     throw new CustomError('Username or password is wrong', 401);
   }
 
   const token = genToken(_id);
-  return token;
+  return { ...sendClientUser, token, _id };
 };
 
 module.exports = {

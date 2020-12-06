@@ -9,8 +9,8 @@ const create = async ({ title, url, user, description }) => {
 const findOne = async (id) => {
   const foundImage = await ImageModel
     .findById(id)
-    .populate('createdBy')
-    .populate('comments');
+    .populate('createdBy', 'username')
+    .populate('comments', 'content')
 
   if (!foundImage) {
     throw new CustomError('Not found image', 400);
