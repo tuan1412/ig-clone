@@ -2,7 +2,7 @@ const ImageModel = require('./image');
 const CustomError = require('../../shared/error');
 
 const getAllImages = async ({ offset, limit }) => {
-  const images = await ImageModel.find().skip(offset).limit(limit).populate('createdBy', 'username');
+  const images = await ImageModel.find().skip(offset).limit(limit).populate('createdBy', 'username').sort({ createdAt: -1 });
   const total = await ImageModel.find().count();
   return [images, total];
 }
