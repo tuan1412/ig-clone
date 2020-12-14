@@ -16,7 +16,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-app.get('/ping', (req, res) => res.send({ success: 1 }));
+app.get('/', (req, res) => res.send({ success: 1 }));
 // config rouer
 router(app);
 

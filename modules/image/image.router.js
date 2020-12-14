@@ -2,6 +2,20 @@ const router = require('express').Router();
 const imageController = require('./image.controller');
 const isAuth = require('../../middlewares/isAuth');
 
+router.get('/', async (req, res) => {
+  try {
+    const { offset, limit } = req.query;
+    const offsetNumber = Number(offset) ? Number(offset) : 0;
+    const limitNumber = Number(limit) ? Number(limit) : 0
+
+    const [images, total] = await imageController.getAllImages({ offset: offsetNumber, limit: limitNumber });
+
+    res.status(201).send({ success: 1, data: { images, total } });
+
+  } catch ({ message, status = 500 }) {
+    res.status(status).send({ success: 0, message })
+  }
+})
 router.post('/', isAuth, async (req, res) => {
   try {
     const { user } = req;
