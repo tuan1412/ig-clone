@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const realtimeServer = require('./modules/io');
 require('dotenv').config();
 
 const router = require('./modules');
@@ -19,8 +20,9 @@ app.use(cors());
 app.get('/', (req, res) => res.send({ success: 1 }));
 // config rouer
 router(app);
+const server = realtimeServer(app);
 
-app.listen(process.env.PORT, (err) => {
+server.listen(process.env.PORT, (err) => {
   if (err) throw err;
   console.log('Server start succesfully')
 })

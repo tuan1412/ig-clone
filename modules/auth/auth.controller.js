@@ -55,7 +55,23 @@ const login = async ({ username, password }) => {
   return { ...sendClientUser, token, _id };
 };
 
+const loginOauth = async ({ oauthId, username }) => {
+  let user;
+
+  const existedUser = await UserModel.findOne({ oauthId });
+  if (!existedUser) {
+    user = await UserModel.create({ oauthId, username });
+  } else {
+    user = existedUser;
+  }
+  const token = genToken(user._id);
+  const cloneUser = JSON.parse(JSON.stringify(user));
+  return { ...cloneUser, token };
+
+}
+
 module.exports = {
   register,
-  login
+  login,
+  loginOauth
 }
