@@ -1,5 +1,4 @@
 import { StatusCodes } from 'http-status-codes';
-
 export class CustomError extends Error {
   status: number;
   message: string;

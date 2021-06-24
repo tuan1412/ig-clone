@@ -4,13 +4,12 @@ const UserSchema = mongoose.Schema(
   {
     username: {
       type: String,
-      unique: true
+      unique: true,
     },
     password: String,
-    oauthId: String
+    oauthId: String,
   },
   { timestamps: true }
 );
 
 module.exports = mongoose.model('User', UserSchema);
-
