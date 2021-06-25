@@ -1,7 +1,7 @@
 import { Request, RequestHandler, Response } from 'express';
 
-export const wrapHandler: <T>(
-  handler: (req: Request, res: Response) => Promise<T>
+export const wrapHandler: (
+  handler: (req: Request, res: Response) => Promise<any>
 ) => RequestHandler = (handler) => {
   return (req, res, next) => {
     handler(req, res)

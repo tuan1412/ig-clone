@@ -7,7 +7,7 @@ export interface User {
   oauthId?: string;
 }
 
-interface UserDocument extends Omit<User, '_id'>, Document {}
+export interface UserDocument extends Omit<User, '_id'>, Document {}
 
 const schema = new Schema<UserDocument>(
   {
