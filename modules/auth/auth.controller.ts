@@ -3,14 +3,6 @@ import bcryptjs from 'bcryptjs';
 import { StatusCodes } from 'http-status-codes';
 import { CustomError } from '../../common/customError';
 import { User, UserModel, UserDocument } from './user';
-interface AuthResponseDto extends User {
-  token: string;
-}
-interface AuthRequestDto {
-  username: string;
-  password?: string;
-  oauthId?: string;
-}
 
 const genCode = (userId: string): string => {
   const privateKey = process.env.JWT_PRIVATE_KEY as Secret;
@@ -27,10 +19,7 @@ const genCode = (userId: string): string => {
   return token;
 };
 
-export const register = async ({
-  username,
-  password,
-}: AuthRequestDto): Promise<AuthResponseDto> => {
+export const register = async ({ username, password }: User): Promise<User> => {
   const existedUser = await UserModel.findOne({ username });
   if (existedUser) {
     throw new CustomError(400, 'User is existed');
@@ -48,10 +37,7 @@ export const register = async ({
   };
 };
 
-export const login = async ({
-  username,
-  password,
-}: AuthRequestDto): Promise<AuthResponseDto> => {
+export const login = async ({ username, password }: User): Promise<User> => {
   const existedUser = await UserModel.findOne({ username });
   if (!existedUser) {
     throw new CustomError(
@@ -62,7 +48,7 @@ export const login = async ({
 
   const samePassword = bcryptjs.compareSync(
     password as string,
-    existedUser.password
+    existedUser.password as string
   );
   if (!samePassword) {
     throw new CustomError(
@@ -82,7 +68,7 @@ export const login = async ({
 export const loginOauth = async ({
   oauthId,
   username,
-}: AuthRequestDto): Promise<AuthResponseDto> => {
+}: User): Promise<User> => {
   let user: UserDocument;
 
   const existedUser = await UserModel.findOne({ oauthId });

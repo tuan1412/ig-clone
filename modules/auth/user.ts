@@ -3,8 +3,9 @@ import { Schema, model, Document } from 'mongoose';
 export interface User {
   _id?: string;
   username: string;
-  password: string;
+  password?: string;
   oauthId?: string;
+  token?: string;
 }
 
 export interface UserDocument extends Omit<User, '_id'>, Document {}
