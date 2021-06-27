@@ -22,7 +22,7 @@ const genCode = (userId: string): string => {
 export const register = async ({ username, password }: User): Promise<User> => {
   const existedUser = await UserModel.findOne({ username });
   if (existedUser) {
-    throw new CustomError(400, 'User is existed');
+    throw new CustomError(StatusCodes.BAD_GATEWAY, 'User is existed');
   }
 
   const salt = bcryptjs.genSaltSync(10);
